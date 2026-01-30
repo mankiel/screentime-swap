@@ -3,40 +3,111 @@
 import Link from 'next/link';
 import { useState } from 'react';
 
-export default function LandingPage() {
+// Waitlist Form Component - No backend required
+function WaitlistForm() {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const [message, setMessage] = useState('');
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
+    // Prevent double submission
+    if (status === 'loading' || isSubmitted) return;
+    
     setStatus('loading');
 
     try {
-      const res = await fetch('/api/waitlist', {
+      // Web3Forms - Free email forwarding service
+      // To configure: Get your access key at https://web3forms.com
+      // Replace 'YOUR_ACCESS_KEY_HERE' with your actual key
+      const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          access_key: 'YOUR_ACCESS_KEY_HERE', // ⚠️ Replace with your Web3Forms access key
+          email: email,
+          subject: 'New ScreenTime Swap Waitlist Signup',
+          from_name: 'ScreenTime Swap Waitlist',
+        }),
       });
 
-      const data = await res.json();
+      const data = await response.json();
 
-      if (res.ok) {
+      if (data.success) {
         setStatus('success');
-        setMessage(data.message);
-        setEmail('');
+        setIsSubmitted(true);
+        setEmail(''); // Clear form
       } else {
         setStatus('error');
-        setMessage(data.error || 'Something went wrong');
       }
     } catch (error) {
       setStatus('error');
-      setMessage('Failed to join waitlist. Please try again.');
     }
   };
 
+  // Show success message after submission
+  if (isSubmitted && status === 'success') {
+    return (
+      <div className="max-w-md mx-auto bg-white/10 backdrop-blur border border-white/20 rounded-lg p-6">
+        <div className="text-center">
+          <div className="text-5xl mb-3">✓</div>
+          <p className="text-xl font-semibold mb-2">Thanks! We'll invite families in small waves.</p>
+          <p className="text-sm text-indigo-100">Check your email for confirmation.</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+    <form onSubmit={handleSubmit} className="max-w-md mx-auto" noValidate>
+      <div className="flex flex-col sm:flex-row gap-3">
+        <div className="flex-1">
+          <label htmlFor="email" className="sr-only">
+            Email address
+          </label>
+          <input
+            id="email"
+            type="email"
+            name="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="parent@email.com"
+            required
+            aria-required="true"
+            aria-label="Email address"
+            disabled={status === 'loading'}
+            className="w-full px-6 py-4 rounded-lg text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-white disabled:opacity-50 disabled:cursor-not-allowed"
+          />
+        </div>
+        <button
+          type="submit"
+          disabled={status === 'loading' || !email}
+          className="bg-white text-indigo-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+        >
+          {status === 'loading' ? 'Joining...' : 'Join the early access list'}
+        </button>
+      </div>
+
+      {/* Error message */}
+      {status === 'error' && (
+        <p className="mt-3 text-red-200 text-sm" role="alert">
+          Something went wrong. Please try again or email us directly.
+        </p>
+      )}
+
+      {/* COPPA-conscious consent text */}
+      <p className="text-xs text-indigo-100 mt-3">
+        For parents only. We'll only email about ScreenTime Swap. No spam.
+      </p>
+    </form>
+  );
+}
+
+export default function LandingPage() {
       {/* Hero Section */}
       <section className="container mx-auto px-6 py-16 md:py-24">
         <div className="max-w-4xl mx-auto text-center">
@@ -189,15 +260,9 @@ export default function LandingPage() {
             <h2 className="text-4xl font-bold mb-4">Join the Early Access Waitlist</h2>
             <p className="text-xl mb-8">Be among the first families to try ScreenTime Swap. Get exclusive early access and special launch pricing.</p>
             
-            {/* Temporary: Using mailto until database is set up */}
-            <a
-              href="mailto:hello@screentimeswap.com?subject=Waitlist%20Signup&body=I'd%20like%20to%20join%20the%20waitlist!"
-              className="inline-block bg-white text-indigo-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition text-lg"
-            >
-              Join Waitlist via Email
-            </a>
+            <WaitlistForm />
             
-            <p className="text-sm mt-4 text-indigo-100">No spam. Unsubscribe anytime. Expected launch: Spring 2026</p>
+            <p className="text-sm mt-4 text-indigo-100">Expected launch: Spring 2026</p>
           </div>
         </div>
       </section>
