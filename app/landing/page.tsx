@@ -189,31 +189,13 @@ export default function LandingPage() {
             <h2 className="text-4xl font-bold mb-4">Join the Early Access Waitlist</h2>
             <p className="text-xl mb-8">Be among the first families to try ScreenTime Swap. Get exclusive early access and special launch pricing.</p>
             
-            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-              <input 
-                type="email" 
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="flex-1 px-6 py-4 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-white"
-                required
-                disabled={status === 'loading'}
-              />
-              <button 
-                type="submit"
-                disabled={status === 'loading'}
-                className="bg-white text-indigo-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {status === 'loading' ? 'Joining...' : 'Join Waitlist'}
-              </button>
-            </form>
-            
-            {status === 'success' && (
-              <p className="mt-4 text-green-200 font-semibold">✓ {message}</p>
-            )}
-            {status === 'error' && (
-              <p className="mt-4 text-red-200 font-semibold">✗ {message}</p>
-            )}
+            {/* Temporary: Using mailto until database is set up */}
+            <a
+              href="mailto:hello@screentimeswap.com?subject=Waitlist%20Signup&body=I'd%20like%20to%20join%20the%20waitlist!"
+              className="inline-block bg-white text-indigo-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition text-lg"
+            >
+              Join Waitlist via Email
+            </a>
             
             <p className="text-sm mt-4 text-indigo-100">No spam. Unsubscribe anytime. Expected launch: Spring 2026</p>
           </div>
