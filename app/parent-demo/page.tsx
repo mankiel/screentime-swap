@@ -340,27 +340,27 @@ export default function ParentDashboardDemo() {
             {PENDING_REDEMPTIONS.length > 0 ? (
               <div className="space-y-4">
                 {PENDING_REDEMPTIONS.map((redemption) => (
-                  <div key={redemption.id} className="bg-white rounded-xl shadow p-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center gap-4">
-                        <span className="text-5xl">{redemption.emoji}</span>
-                        <div>
-                          <p className="text-xl font-bold">{redemption.reward}</p>
-                          <p className="text-gray-600">Cost: {redemption.cost} tokens</p>
-                          <p className="text-sm text-gray-500">Requested {redemption.requestedAt}</p>
+                  <div key={redemption.id} className="bg-white rounded-xl shadow p-4 md:p-6">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-4">
+                      <div className="flex items-center gap-3 sm:gap-4">
+                        <span className="text-4xl sm:text-5xl flex-shrink-0">{redemption.emoji}</span>
+                        <div className="min-w-0">
+                          <p className="text-lg sm:text-xl font-bold truncate">{redemption.reward}</p>
+                          <p className="text-sm sm:text-base text-gray-600">Cost: {redemption.cost} tokens</p>
+                          <p className="text-xs sm:text-sm text-gray-500">Requested {redemption.requestedAt}</p>
                         </div>
                       </div>
                     </div>
-                    <div className="flex gap-3">
+                    <div className="flex flex-col sm:flex-row gap-3">
                       <button
                         onClick={() => handleApproveRedemption(redemption.id, true)}
-                        className="flex-1 bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700"
+                        className="w-full sm:flex-1 bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition"
                       >
                         ✓ Approve
                       </button>
                       <button
                         onClick={() => handleApproveRedemption(redemption.id, false)}
-                        className="flex-1 bg-red-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-700"
+                        className="w-full sm:flex-1 bg-red-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-700 transition"
                       >
                         ✗ Deny
                       </button>
