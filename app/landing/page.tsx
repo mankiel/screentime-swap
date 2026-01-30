@@ -28,7 +28,7 @@ function WaitlistForm() {
           Accept: 'application/json',
         },
         body: JSON.stringify({
-          access_key: 'YOUR_ACCESS_KEY_HERE', // ⚠️ Replace with your Web3Forms access key
+          access_key: 'd82bea2a-c215-4abb-b5e4-53e759193b6b', // Web3Forms access key
           email: email,
           subject: 'New ScreenTime Swap Waitlist Signup',
           from_name: 'ScreenTime Swap Waitlist',
