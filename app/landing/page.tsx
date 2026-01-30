@@ -277,10 +277,26 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* About Creator Section */}
+      <section className="bg-gradient-to-br from-pink-50 to-purple-50 py-12">
+        <div className="container mx-auto px-6">
+          <div className="max-w-3xl mx-auto text-center">
+            <p className="text-sm uppercase tracking-wide text-indigo-600 font-semibold mb-3">Built by a Mom, for Moms</p>
+            <h3 className="text-2xl font-bold text-gray-900 mb-4">TheMomDegree</h3>
+            <p className="text-lg text-gray-700 mb-6">
+              Creating practical apps that solve real parenting challenges. Because moms know what moms need.
+            </p>
+            <p className="text-gray-600">
+              Follow the journey → <a href="https://twitter.com/themomdegree" target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:text-indigo-700 font-semibold underline">@themomdegree</a>
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="bg-gray-900 text-gray-400 py-12">
         <div className="container mx-auto px-6 text-center">
-          <p className="mb-4">© 2026 ScreenTime Swap. All rights reserved.</p>
+          <p className="mb-4">© 2026 ScreenTime Swap by TheMomDegree. All rights reserved.</p>
           <div className="flex justify-center gap-6">
             <Link href="/privacy" className="hover:text-white transition">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-white transition">Terms of Service</Link>
