@@ -16,7 +16,11 @@ export const metadata: Metadata = {
   title: "ScreenTime Swap - Earn Screen Time Through Activities",
   description: "A positive reward system where children earn bonus screen time through offline activities",
   icons: {
-    icon: '/logo.png',
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/logo.png', type: 'image/png', sizes: '512x512' },
+    ],
+    apple: '/logo.png',
   },
 };
 
