@@ -1,0 +1,1 @@
+ScreenTime Swap MVP successfully initialized. Next steps: 1) Configure Supabase credentials in .env.local 2) Run database schema in Supabase 3) npm run dev

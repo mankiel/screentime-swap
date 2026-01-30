@@ -1,0 +1,239 @@
+// Prisma Schema for ScreenTime Swap MVP
+// Based on COPPA-compliant design from MVP specification
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  url = env("DATABASE_URL")
+  provider = "postgresql"
+}
+
+// Parent account (owns all child data)
+model User {
+  id                   String            @id @default(uuid())
+  email                String            @unique
+  passwordHash         String            @map("password_hash")
+  createdAt            DateTime          @default(now()) @map("created_at")
+  subscriptionTier     SubscriptionTier  @default(FREE) @map("subscription_tier")
+  subscriptionExpires  DateTime?         @map("subscription_expires")
+  
+  childProfiles        ChildProfile[]
+  redemptionApprovals  RedemptionHistory[] @relation("ApprovedBy")
+  
+  @@map("users")
+}
+
+model ChildProfile {
+  id        String   @id @default(uuid())
+  parentId  String   @map("parent_id")
+  name      String
+  age       Int
+  avatar    String
+  pinCode   String   @map("pin_code")
+  createdAt DateTime @default(now()) @map("created_at")
+  isActive  Boolean  @default(true) @map("is_active")
+  
+  parent              User                @relation(fields: [parentId], references: [id], onDelete: Cascade)
+  activityTemplates   ActivityTemplate[]
+  activityLogs        ActivityLog[]
+  tokenBalance        TokenBalance?
+  rewards             Reward[]
+  redemptionHistory   RedemptionHistory[]
+  challenges          Challenge[]
+  badges              Badge[]
+  
+  @@map("child_profiles")
+}
+
+model ActivityTemplate {
+  id               String           @id @default(uuid())
+  childId          String           @map("child_id")
+  name             String
+  category         ActivityCategory
+  tokenValuePerUnit Int             @map("token_value_per_unit")
+  unitType         UnitType         @map("unit_type")
+  isActive         Boolean          @default(true) @map("is_active")
+  isCustom         Boolean          @map("is_custom")
+  createdAt        DateTime         @default(now()) @map("created_at")
+  
+  child            ChildProfile     @relation(fields: [childId], references: [id], onDelete: Cascade)
+  activityLogs     ActivityLog[]
+  
+  @@map("activity_templates")
+}
+
+model ActivityLog {
+  id                  String            @id @default(uuid())
+  childId             String            @map("child_id")
+  activityTemplateId  String            @map("activity_template_id")
+  timeSpentMinutes    Int?              @map("time_spent_minutes")
+  tokensEarned        Int               @map("tokens_earned")
+  note                String?
+  photoUrl            String?           @map("photo_url")
+  loggedAt            DateTime          @default(now()) @map("logged_at")
+  isEditedByParent    Boolean           @default(false) @map("is_edited_by_parent")
+  parentEditNote      String?           @map("parent_edit_note")
+  
+  child               ChildProfile      @relation(fields: [childId], references: [id], onDelete: Cascade)
+  activityTemplate    ActivityTemplate  @relation(fields: [activityTemplateId], references: [id])
+  
+  @@map("activity_logs")
+}
+
+model TokenBalance {
+  id              String       @id @default(uuid())
+  childId         String       @unique @map("child_id")
+  currentBalance  Int          @default(0) @map("current_balance")
+  lifetimeEarned  Int          @default(0) @map("lifetime_earned")
+  updatedAt       DateTime     @updatedAt @map("updated_at")
+  
+  child           ChildProfile @relation(fields: [childId], references: [id], onDelete: Cascade)
+  
+  @@map("token_balances")
+}
+
+model Reward {
+  id                  String            @id @default(uuid())
+  childId             String            @map("child_id")
+  name                String
+  tokenCost           Int               @map("token_cost")
+  rewardType          RewardType        @map("reward_type")
+  screenTimeMinutes   Int?              @map("screen_time_minutes")
+  isActive            Boolean           @default(true) @map("is_active")
+  isDefault           Boolean           @map("is_default")
+  createdAt           DateTime          @default(now()) @map("created_at")
+  
+  child               ChildProfile      @relation(fields: [childId], references: [id], onDelete: Cascade)
+  redemptionHistory   RedemptionHistory[]
+  
+  @@map("rewards")
+}
+
+model RedemptionHistory {
+  id            String           @id @default(uuid())
+  childId       String           @map("child_id")
+  rewardId      String           @map("reward_id")
+  tokensSpent   Int              @map("tokens_spent")
+  status        RedemptionStatus
+  requestedAt   DateTime         @default(now()) @map("requested_at")
+  approvedAt    DateTime?        @map("approved_at")
+  approvedBy    String?          @map("approved_by")
+  parentNote    String?          @map("parent_note")
+  usedAt        DateTime?        @map("used_at")
+  
+  child         ChildProfile     @relation(fields: [childId], references: [id], onDelete: Cascade)
+  reward        Reward           @relation(fields: [rewardId], references: [id])
+  approver      User?            @relation("ApprovedBy", fields: [approvedBy], references: [id])
+  
+  @@map("redemption_history")
+}
+
+model Challenge {
+  id            String          @id @default(uuid())
+  childId       String          @map("child_id")
+  title         String
+  description   String
+  challengeType ChallengeType   @map("challenge_type")
+  goalValue     Int             @map("goal_value")
+  bonusTokens   Int             @map("bonus_tokens")
+  startDate     DateTime        @map("start_date") @db.Date
+  endDate       DateTime        @map("end_date") @db.Date
+  status        ChallengeStatus
+  completedAt   DateTime?       @map("completed_at")
+  
+  child         ChildProfile    @relation(fields: [childId], references: [id], onDelete: Cascade)
+  
+  @@map("challenges")
+}
+
+model Badge {
+  id         String     @id @default(uuid())
+  childId    String     @map("child_id")
+  badgeType  BadgeType  @map("badge_type")
+  earnedAt   DateTime   @default(now()) @map("earned_at")
+  
+  child      ChildProfile @relation(fields: [childId], references: [id], onDelete: Cascade)
+  
+  @@map("badges")
+}
+
+// Enums
+enum SubscriptionTier {
+  FREE
+  PREMIUM
+  
+  @@map("subscription_tier")
+}
+
+enum ActivityCategory {
+  READING
+  OUTDOOR
+  CREATIVE
+  HELPING
+  LEARNING
+  CUSTOM
+  
+  @@map("activity_category")
+}
+
+enum UnitType {
+  TIME_BASED
+  TASK_BASED
+  
+  @@map("unit_type")
+}
+
+enum RewardType {
+  SCREEN_TIME
+  CUSTOM_PRIVILEGE
+  
+  @@map("reward_type")
+}
+
+enum RedemptionStatus {
+  PENDING
+  APPROVED
+  DENIED
+  USED
+  
+  @@map("redemption_status")
+}
+
+enum ChallengeType {
+  TRY_NEW_ACTIVITIES
+  TIME_BASED
+  TASK_COUNT
+  CUSTOM
+  
+  @@map("challenge_type")
+}
+
+enum ChallengeStatus {
+  ACTIVE
+  COMPLETED
+  EXPIRED
+  
+  @@map("challenge_status")
+}
+
+enum BadgeType {
+  FIRST_ACTIVITY
+  CHALLENGE_COMPLETE
+  TEN_ACTIVITIES
+  FIFTY_TOKENS
+  HUNDRED_TOKENS
+  EXPLORER
+  
+  @@map("badge_type")
+}
+
+// Waitlist for early access signups
+model Waitlist {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  createdAt DateTime @default(now()) @map("created_at")
+  
+  @@map("waitlist")
+}
