@@ -108,6 +108,8 @@ function WaitlistForm() {
 }
 
 export default function LandingPage() {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
       {/* Hero Section */}
       <section className="container mx-auto px-6 py-16 md:py-24">
         <div className="max-w-4xl mx-auto text-center">
