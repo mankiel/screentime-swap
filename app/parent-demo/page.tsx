@@ -66,9 +66,12 @@ export default function ParentDashboardDemo() {
       <div className="bg-white shadow-lg">
         <div className="container mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">Parent Dashboard</h1>
-              <p className="text-gray-600 mt-1">Managing {CHILD_DATA.name}'s activities & rewards</p>
+            <div className="flex items-center gap-4">
+              <img src="/logo.png" alt="ScreenTime Swap" className="w-16 h-16" />
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900">Parent Dashboard</h1>
+                <p className="text-gray-600 mt-1">Managing {CHILD_DATA.name}'s activities & rewards</p>
+              </div>
             </div>
             <div className="flex items-center gap-4">
               <div className="text-center bg-gradient-to-br from-purple-100 to-pink-100 px-6 py-3 rounded-xl">

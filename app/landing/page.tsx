@@ -113,6 +113,14 @@ export default function LandingPage() {
       {/* Hero Section */}
       <section className="container mx-auto px-6 py-16 md:py-24">
         <div className="max-w-4xl mx-auto text-center">
+          {/* Logo */}
+          <div className="mb-8 flex justify-center">
+            <img 
+              src="/logo.png" 
+              alt="ScreenTime Swap Logo" 
+              className="w-32 h-32 md:w-40 md:h-40"
+            />
+          </div>
           <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
             Turn Screen Time into 
             <span className="text-indigo-600"> Family Time</span>

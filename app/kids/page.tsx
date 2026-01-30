@@ -92,6 +92,14 @@ export default function KidsPage() {
         </p>
       </div>
 
+      {/* Logo Header */}
+      <div className="bg-white/90 backdrop-blur py-3">
+        <div className="container mx-auto px-6 flex items-center justify-center gap-3">
+          <img src="/logo.png" alt="ScreenTime Swap" className="w-12 h-12" />
+          <h1 className="text-2xl font-bold text-gray-900">ScreenTime Swap</h1>
+        </div>
+      </div>
+
       {/* Signup Prompt Modal */}
       {showSignupPrompt && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
