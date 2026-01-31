@@ -2,8 +2,8 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import { ArrowRight, Check, X, BookOpen, Coins, Gift, Users, Smartphone, Trophy, BarChart3 } from 'lucide-react';
 
-// Waitlist Form Component - No backend required
 function WaitlistForm() {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -11,16 +11,10 @@ function WaitlistForm() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
-    // Prevent double submission
     if (status === 'loading' || isSubmitted) return;
-    
     setStatus('loading');
 
     try {
-      // Web3Forms - Free email forwarding service
-      // To configure: Get your access key at https://web3forms.com
-      // Replace 'YOUR_ACCESS_KEY_HERE' with your actual key
       const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: {
@@ -28,7 +22,7 @@ function WaitlistForm() {
           Accept: 'application/json',
         },
         body: JSON.stringify({
-          access_key: 'd82bea2a-c215-4abb-b5e4-53e759193b6b', // Web3Forms access key
+          access_key: 'd82bea2a-c215-4abb-b5e4-53e759193b6b',
           email: email,
           subject: 'New ScreenTime Swap Waitlist Signup',
           from_name: 'ScreenTime Swap Waitlist',
@@ -36,39 +30,39 @@ function WaitlistForm() {
       });
 
       const data = await response.json();
-
       if (data.success) {
         setStatus('success');
         setIsSubmitted(true);
-        setEmail(''); // Clear form
+        setEmail('');
       } else {
         setStatus('error');
       }
-    } catch (error) {
+    } catch {
       setStatus('error');
     }
   };
 
-  // Show success message after submission
   if (isSubmitted && status === 'success') {
     return (
-      <div className="max-w-md mx-auto bg-white/10 backdrop-blur border border-white/20 rounded-lg p-6">
-        <div className="text-center">
-          <div className="text-5xl mb-3">✓</div>
-          <p className="text-xl font-semibold mb-2">Thanks! We'll invite families in small waves.</p>
-          <p className="text-sm text-indigo-100">Check your email for confirmation.</p>
+      <div className="bg-card border border-border rounded-xl p-6 max-w-md mx-auto">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
+            <Check className="w-5 h-5 text-primary-foreground" />
+          </div>
+          <div>
+            <p className="font-semibold text-foreground">{"You're on the list!"}</p>
+            <p className="text-sm text-muted-foreground">{"We'll email you when we launch."}</p>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-md mx-auto" noValidate>
+    <form onSubmit={handleSubmit} className="max-w-lg mx-auto" noValidate>
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="flex-1">
-          <label htmlFor="email" className="sr-only">
-            Email address
-          </label>
+          <label htmlFor="email" className="sr-only">Email address</label>
           <input
             id="email"
             type="email"
@@ -80,28 +74,27 @@ function WaitlistForm() {
             aria-required="true"
             aria-label="Email address"
             disabled={status === 'loading'}
-            className="w-full px-6 py-4 rounded-lg text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-white disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full px-5 py-4 rounded-xl bg-card border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed font-sans"
           />
         </div>
         <button
           type="submit"
           disabled={status === 'loading' || !email}
-          className="bg-white text-indigo-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+          className="bg-primary text-primary-foreground px-6 py-4 rounded-xl font-semibold hover:opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap flex items-center justify-center gap-2"
         >
-          {status === 'loading' ? 'Joining...' : 'Join the early access list'}
+          {status === 'loading' ? 'Joining...' : 'Join Waitlist'}
+          <ArrowRight className="w-4 h-4" />
         </button>
       </div>
 
-      {/* Error message */}
       {status === 'error' && (
-        <p className="mt-3 text-red-200 text-sm" role="alert">
-          Something went wrong. Please try again or email us directly.
+        <p className="mt-3 text-destructive text-sm" role="alert">
+          Something went wrong. Please try again.
         </p>
       )}
 
-      {/* COPPA-conscious consent text */}
-      <p className="text-xs text-indigo-100 mt-3">
-        For parents only. We'll only email about ScreenTime Swap. No spam.
+      <p className="text-xs text-muted-foreground mt-3 text-center">
+        For parents only. No spam, ever.
       </p>
     </form>
   );
@@ -109,98 +102,107 @@ function WaitlistForm() {
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
-      {/* Hero Section */}
-      <section className="container mx-auto px-6 py-16 md:py-24">
-        <div className="max-w-4xl mx-auto text-center">
-          {/* Logo */}
-          <div className="mb-8 flex justify-center">
-            <img 
-              src="/logo.png" 
-              alt="ScreenTime Swap Logo" 
-              className="w-32 h-32 md:w-40 md:h-40"
-            />
+    <div className="min-h-screen bg-background font-sans">
+      {/* Header */}
+      <header className="border-b border-border">
+        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <img src="/logo.png" alt="ScreenTime Swap" className="w-10 h-10" />
+            <span className="font-semibold text-foreground text-lg">ScreenTime Swap</span>
           </div>
-          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-            Turn Screen Time into 
-            <span className="text-indigo-600"> Family Time</span>
-          </h1>
-          <p className="text-xl md:text-2xl text-gray-700 mb-8">
-            Stop the screen time battles. Let your kids earn bonus privileges through real-world activities they choose.
-          </p>
-          <div className="flex flex-col gap-3 items-center mb-4">
-            <Link 
-              href="#waitlist"
-              className="bg-indigo-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition w-full sm:w-auto"
-            >
+          <nav className="hidden md:flex items-center gap-8">
+            <Link href="#how-it-works" className="text-muted-foreground hover:text-foreground transition text-sm">
+              How It Works
+            </Link>
+            <Link href="#features" className="text-muted-foreground hover:text-foreground transition text-sm">
+              Features
+            </Link>
+            <Link href="#waitlist" className="bg-primary text-primary-foreground px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition">
               Join Waitlist
             </Link>
-            <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+          </nav>
+        </div>
+      </header>
+
+      {/* Hero Section */}
+      <section className="py-20 md:py-32">
+        <div className="container mx-auto px-6">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="inline-flex items-center gap-2 bg-accent/10 text-accent-foreground px-4 py-2 rounded-full text-sm mb-8 border border-accent/20">
+              <span className="w-2 h-2 bg-accent rounded-full" />
+              <span className="text-foreground">Launching Spring 2026</span>
+            </div>
+            
+            <h1 className="text-5xl md:text-7xl font-bold text-foreground mb-6 tracking-tight text-balance leading-tight">
+              Turn screen time into family time
+            </h1>
+            
+            <p className="text-xl md:text-2xl text-muted-foreground mb-10 max-w-2xl mx-auto text-pretty leading-relaxed">
+              Kids earn bonus screen time through real-world activities they choose. 
+              Stop the battles, start the balance.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link 
-                href="/parent-demo"
-                className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-indigo-700 transition text-center"
+                href="#waitlist"
+                className="bg-primary text-primary-foreground px-8 py-4 rounded-xl text-lg font-semibold hover:opacity-90 transition inline-flex items-center justify-center gap-2"
               >
-                👨‍👩‍👧 Parent Demo
+                Join Waitlist
+                <ArrowRight className="w-5 h-5" />
               </Link>
               <Link 
                 href="/kids"
-                className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-lg font-semibold hover:from-purple-600 hover:to-pink-600 transition text-center"
+                className="bg-card border border-border text-foreground px-8 py-4 rounded-xl text-lg font-semibold hover:bg-muted transition"
               >
-                🌟 Kids Demo
+                Demo for Kids
+              </Link>
+              <Link 
+                href="/parent-demo"
+                className="bg-card border border-border text-foreground px-8 py-4 rounded-xl text-lg font-semibold hover:bg-muted transition"
+              >
+                Demo for Parents
               </Link>
             </div>
           </div>
-          <p className="text-sm text-gray-600 mb-12">
-            ⬆️ Try both demos - no signup required!
-          </p>
         </div>
       </section>
 
       {/* Problem/Solution Section */}
-      <section className="bg-white py-16">
+      <section className="py-20 border-t border-border">
         <div className="container mx-auto px-6">
-          <div className="max-w-4xl mx-auto">
-            <div className="grid md:grid-cols-2 gap-12">
-              <div>
-                <h2 className="text-3xl font-bold text-gray-900 mb-4">The Problem</h2>
-                <ul className="space-y-3 text-gray-700">
-                  <li className="flex items-start">
-                    <span className="text-red-500 mr-2">✗</span>
-                    Constant screen time battles
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-red-500 mr-2">✗</span>
-                    Kids feel controlled and restricted
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-red-500 mr-2">✗</span>
-                    No motivation for offline activities
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-red-500 mr-2">✗</span>
-                    Parental control apps feel punitive
-                  </li>
+          <div className="max-w-5xl mx-auto">
+            <div className="grid md:grid-cols-2 gap-12 md:gap-20">
+              <div className="bg-card border border-border rounded-2xl p-8">
+                <h2 className="text-2xl font-bold text-foreground mb-6">The Problem</h2>
+                <ul className="space-y-4">
+                  {[
+                    'Constant screen time battles',
+                    'Kids feel controlled and restricted',
+                    'No motivation for offline activities',
+                    'Parental control apps feel punitive',
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-start gap-3 text-muted-foreground">
+                      <X className="w-5 h-5 text-destructive shrink-0 mt-0.5" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
                 </ul>
               </div>
-              <div>
-                <h2 className="text-3xl font-bold text-gray-900 mb-4">The Solution</h2>
-                <ul className="space-y-3 text-gray-700">
-                  <li className="flex items-start">
-                    <span className="text-green-500 mr-2">✓</span>
-                    Kids earn tokens for activities they choose
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-green-500 mr-2">✓</span>
-                    Trade tokens for bonus screen time
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-green-500 mr-2">✓</span>
-                    Builds self-regulation and responsibility
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-green-500 mr-2">✓</span>
-                    Positive reinforcement, not punishment
-                  </li>
+              
+              <div className="bg-primary text-primary-foreground rounded-2xl p-8">
+                <h2 className="text-2xl font-bold mb-6">The Solution</h2>
+                <ul className="space-y-4">
+                  {[
+                    'Kids earn tokens for activities they choose',
+                    'Trade tokens for bonus screen time',
+                    'Builds self-regulation and responsibility',
+                    'Positive reinforcement, not punishment',
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-start gap-3 text-primary-foreground/90">
+                      <Check className="w-5 h-5 text-primary-foreground shrink-0 mt-0.5" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>
@@ -209,98 +211,117 @@ export default function LandingPage() {
       </section>
 
       {/* How It Works */}
-      <section className="py-16">
+      <section id="how-it-works" className="py-20 border-t border-border">
         <div className="container mx-auto px-6">
-          <h2 className="text-4xl font-bold text-center text-gray-900 mb-12">How It Works</h2>
+          <div className="max-w-3xl mx-auto text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">How It Works</h2>
+            <p className="text-lg text-muted-foreground">Simple steps to screen time harmony</p>
+          </div>
+          
           <div className="max-w-5xl mx-auto grid md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="bg-indigo-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl">📚</span>
+            {[
+              {
+                icon: BookOpen,
+                step: '1',
+                title: 'Do Activities',
+                description: 'Kids choose from parent-approved activities: reading, outdoor play, chores, creative projects.',
+              },
+              {
+                icon: Coins,
+                step: '2',
+                title: 'Earn Tokens',
+                description: 'Log activities in the app and instantly earn tokens. Build responsibility through self-tracking.',
+              },
+              {
+                icon: Gift,
+                step: '3',
+                title: 'Swap for Rewards',
+                description: 'Trade tokens for bonus screen time, special privileges, or custom family rewards.',
+              },
+            ].map((item, i) => (
+              <div key={i} className="text-center">
+                <div className="relative inline-flex mb-6">
+                  <div className="w-20 h-20 rounded-2xl bg-muted flex items-center justify-center">
+                    <item.icon className="w-8 h-8 text-foreground" />
+                  </div>
+                  <span className="absolute -top-2 -right-2 w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-sm font-bold">
+                    {item.step}
+                  </span>
+                </div>
+                <h3 className="text-xl font-semibold text-foreground mb-3">{item.title}</h3>
+                <p className="text-muted-foreground leading-relaxed">{item.description}</p>
               </div>
-              <h3 className="text-xl font-semibold mb-2">1. Do Activities</h3>
-              <p className="text-gray-600">Kids choose from parent-approved activities: reading, outdoor play, chores, creative projects, and more.</p>
-            </div>
-            <div className="text-center">
-              <div className="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl">🪙</span>
-              </div>
-              <h3 className="text-xl font-semibold mb-2">2. Earn Tokens</h3>
-              <p className="text-gray-600">Log activities in the app and instantly earn tokens. Build responsibility through self-tracking.</p>
-            </div>
-            <div className="text-center">
-              <div className="bg-pink-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl">🎮</span>
-              </div>
-              <h3 className="text-xl font-semibold mb-2">3. Swap for Rewards</h3>
-              <p className="text-gray-600">Trade tokens for bonus screen time, special privileges, or custom family rewards.</p>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="bg-white py-16">
+      <section id="features" className="py-20 border-t border-border">
         <div className="container mx-auto px-6">
-          <h2 className="text-4xl font-bold text-center text-gray-900 mb-12">Key Features</h2>
-          <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-lg">
-              <h3 className="text-xl font-semibold mb-3 text-gray-900">🎯 Parent Control Dashboard</h3>
-              <p className="text-gray-700">Set activities, assign token values, and monitor your child's progress—all from one simple dashboard.</p>
-            </div>
-            <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-6 rounded-lg">
-              <h3 className="text-xl font-semibold mb-3 text-gray-900">📱 Kid-Friendly Mobile App</h3>
-              <p className="text-gray-700">Beautiful, easy-to-use interface designed for kids ages 8-12. Track activities and redeem rewards instantly.</p>
-            </div>
-            <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-6 rounded-lg">
-              <h3 className="text-xl font-semibold mb-3 text-gray-900">🏆 Custom Rewards</h3>
-              <p className="text-gray-700">Beyond screen time—create rewards that match your family values like staying up late or picking the family movie.</p>
-            </div>
-            <div className="bg-gradient-to-br from-orange-50 to-yellow-50 p-6 rounded-lg">
-              <h3 className="text-xl font-semibold mb-3 text-gray-900">📊 Activity Insights</h3>
-              <p className="text-gray-700">See what activities your kids love and watch them build healthy offline habits over time.</p>
-            </div>
+          <div className="max-w-3xl mx-auto text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">Key Features</h2>
+            <p className="text-lg text-muted-foreground">Everything you need for balanced screen time</p>
+          </div>
+          
+          <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-6">
+            {[
+              {
+                icon: Users,
+                title: 'Parent Control Dashboard',
+                description: 'Set activities, assign token values, and monitor progress from one simple dashboard.',
+              },
+              {
+                icon: Smartphone,
+                title: 'Kid-Friendly Interface',
+                description: 'Beautiful, easy-to-use design for kids ages 8-12. Track activities and redeem rewards instantly.',
+              },
+              {
+                icon: Trophy,
+                title: 'Custom Rewards',
+                description: 'Beyond screen time—create rewards like staying up late or picking the family movie.',
+              },
+              {
+                icon: BarChart3,
+                title: 'Activity Insights',
+                description: 'See what activities your kids love and watch them build healthy offline habits.',
+              },
+            ].map((item, i) => (
+              <div key={i} className="bg-card border border-border rounded-2xl p-8 hover:border-foreground/20 transition">
+                <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center mb-5">
+                  <item.icon className="w-6 h-6 text-foreground" />
+                </div>
+                <h3 className="text-xl font-semibold text-foreground mb-3">{item.title}</h3>
+                <p className="text-muted-foreground leading-relaxed">{item.description}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Waitlist Section */}
-      <section id="waitlist" className="py-16 bg-gradient-to-br from-indigo-600 to-purple-600">
+      <section id="waitlist" className="py-20 border-t border-border">
         <div className="container mx-auto px-6">
-          <div className="max-w-2xl mx-auto text-center text-white">
-            <h2 className="text-4xl font-bold mb-4">Join the Early Access Waitlist</h2>
-            <p className="text-xl mb-8">Be among the first families to try ScreenTime Swap. Get exclusive early access and special launch pricing.</p>
+          <div className="max-w-2xl mx-auto text-center">
+            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">Join the Waitlist</h2>
+            <p className="text-lg text-muted-foreground mb-10">
+              Be among the first families to try ScreenTime Swap. 
+              Get exclusive early access and special launch pricing.
+            </p>
             
             <WaitlistForm />
-            
-            <p className="text-sm mt-4 text-indigo-100">Expected launch: Spring 2026</p>
           </div>
         </div>
       </section>
 
-      {/* About Creator Section */}
-      <section className="bg-gradient-to-br from-pink-50 to-purple-50 py-12">
+      {{/* Footer */}
+      <footer className="py-12 border-t border-border">
         <div className="container mx-auto px-6">
-          <div className="max-w-3xl mx-auto text-center">
-            <p className="text-sm uppercase tracking-wide text-indigo-600 font-semibold mb-3">Built by a Mom, for Moms</p>
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">TheMomDegree</h3>
-            <p className="text-lg text-gray-700 mb-6">
-              Creating practical apps that solve real parenting challenges. Because moms know what moms need.
-            </p>
-            <p className="text-gray-600">
-              Follow the journey → <a href="https://twitter.com/themomdegree" target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:text-indigo-700 font-semibold underline">@themomdegree</a>
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-gray-400 py-12">
-        <div className="container mx-auto px-6 text-center">
-          <p className="mb-4">© 2026 ScreenTime Swap by TheMomDegree. All rights reserved.</p>
-          <div className="flex justify-center gap-6">
-            <Link href="/privacy" className="hover:text-white transition">Privacy Policy</Link>
-            <Link href="/terms" className="hover:text-white transition">Terms of Service</Link>
-            <Link href="/contact" className="hover:text-white transition">Contact</Link>
+          <div className="flex items-center justify-center gap-3">
+            <img src="/logo.png" alt="ScreenTime Swap" className="w-8 h-8" />
+            <span className="text-muted-foreground text-sm">
+              2026 ScreenTime Swap
+            </span>
           </div>
         </div>
       </footer>
