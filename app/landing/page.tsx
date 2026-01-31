@@ -341,24 +341,11 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="py-12 border-t border-border">
         <div className="container mx-auto px-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-3">
-              <img src="/logo.png" alt="ScreenTime Swap" className="w-8 h-8" />
-              <span className="text-muted-foreground text-sm">
-                2026 ScreenTime Swap by TheMomDegree
-              </span>
-            </div>
-            <div className="flex items-center gap-6 text-sm">
-              <Link href="/privacy" className="text-muted-foreground hover:text-foreground transition">
-                Privacy
-              </Link>
-              <Link href="/terms" className="text-muted-foreground hover:text-foreground transition">
-                Terms
-              </Link>
-              <Link href="/contact" className="text-muted-foreground hover:text-foreground transition">
-                Contact
-              </Link>
-            </div>
+          <div className="flex items-center justify-center gap-3">
+            <img src="/logo.png" alt="ScreenTime Swap" className="w-8 h-8" />
+            <span className="text-muted-foreground text-sm">
+              2026 ScreenTime Swap by TheMomDegree
+            </span>
           </div>
         </div>
       </footer>
