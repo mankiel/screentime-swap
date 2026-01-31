@@ -64,19 +64,19 @@ export default function ParentDashboardDemo() {
 
       {/* Header */}
       <div className="bg-white shadow-lg">
-        <div className="container mx-auto px-6 py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <img src="/logo.png" alt="ScreenTime Swap" className="w-16 h-16" />
+        <div className="container mx-auto px-4 md:px-6 py-4 md:py-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3 md:gap-4">
+              <img src="/logo.png" alt="ScreenTime Swap" className="w-12 h-12 md:w-16 md:h-16" />
               <div>
-                <h1 className="text-3xl font-bold text-gray-900">Parent Dashboard</h1>
-                <p className="text-gray-600 mt-1">Managing {CHILD_DATA.name}'s activities & rewards</p>
+                <h1 className="text-xl md:text-3xl font-bold text-gray-900">Parent Dashboard</h1>
+                <p className="text-sm md:text-base text-gray-600 mt-1">Managing {CHILD_DATA.name}'s activities & rewards</p>
               </div>
             </div>
-            <div className="flex items-center gap-4">
-              <div className="text-center bg-gradient-to-br from-purple-100 to-pink-100 px-6 py-3 rounded-xl">
-                <p className="text-sm text-gray-600">Current Balance</p>
-                <p className="text-2xl font-bold text-purple-600">{CHILD_DATA.tokenBalance} 🪙</p>
+            <div className="flex items-center gap-4 w-full sm:w-auto">
+              <div className="text-center bg-gradient-to-br from-purple-100 to-pink-100 px-4 md:px-6 py-2 md:py-3 rounded-xl flex-1 sm:flex-none">
+                <p className="text-xs md:text-sm text-gray-600">Current Balance</p>
+                <p className="text-xl md:text-2xl font-bold text-purple-600">{CHILD_DATA.tokenBalance} 🪙</p>
               </div>
             </div>
           </div>
@@ -84,27 +84,28 @@ export default function ParentDashboardDemo() {
       </div>
 
       {/* Tabs */}
-      <div className="bg-white border-b">
-        <div className="container mx-auto px-6">
-          <div className="flex gap-8">
+      <div className="bg-white border-b overflow-x-auto">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="flex gap-4 md:gap-8 min-w-max md:min-w-0">
             {[
-              { key: 'overview', label: 'Overview', icon: '📊' },
-              { key: 'activities', label: 'Activity Settings', icon: '⚙️' },
-              { key: 'rewards', label: 'Reward Settings', icon: '🎁' },
-              { key: 'approvals', label: 'Pending Approvals', icon: '✓', badge: PENDING_REDEMPTIONS.length },
+              { key: 'overview', label: 'Overview', icon: '📊', shortLabel: 'Overview' },
+              { key: 'activities', label: 'Activity Settings', icon: '⚙️', shortLabel: 'Activities' },
+              { key: 'rewards', label: 'Reward Settings', icon: '🎁', shortLabel: 'Rewards' },
+              { key: 'approvals', label: 'Pending Approvals', icon: '✓', shortLabel: 'Approvals', badge: PENDING_REDEMPTIONS.length },
             ].map((tab) => (
               <button
                 key={tab.key}
                 onClick={() => setActiveTab(tab.key as any)}
-                className={`py-4 px-2 border-b-2 font-semibold transition relative ${
+                className={`py-3 md:py-4 px-2 md:px-3 border-b-2 font-semibold transition relative whitespace-nowrap text-sm md:text-base ${
                   activeTab === tab.key
                     ? 'border-indigo-600 text-indigo-600'
                     : 'border-transparent text-gray-600 hover:text-gray-900'
                 }`}
               >
-                {tab.icon} {tab.label}
+                <span className="hidden md:inline">{tab.icon} {tab.label}</span>
+                <span className="md:hidden">{tab.icon} {tab.shortLabel}</span>
                 {tab.badge ? (
-                  <span className="absolute -top-1 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 md:-right-2 bg-red-500 text-white text-xs rounded-full w-4 h-4 md:w-5 md:h-5 flex items-center justify-center">
                     {tab.badge}
                   </span>
                 ) : null}
@@ -114,7 +115,7 @@ export default function ParentDashboardDemo() {
         </div>
       </div>
 
-      <div className="container mx-auto px-6 py-8 max-w-6xl">
+      <div className="container mx-auto px-4 md:px-6 py-6 md:py-8 max-w-6xl">
         {/* Overview Tab */}
         {activeTab === 'overview' && (
           <div className="space-y-6">
