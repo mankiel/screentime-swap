@@ -142,7 +142,7 @@ export default function LandingPage() {
               Stop the battles, start the balance.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link 
                 href="#waitlist"
                 className="bg-primary text-primary-foreground px-8 py-4 rounded-xl text-lg font-semibold hover:opacity-90 transition inline-flex items-center justify-center gap-2"
@@ -154,17 +154,13 @@ export default function LandingPage() {
                 href="/kids"
                 className="bg-card border border-border text-foreground px-8 py-4 rounded-xl text-lg font-semibold hover:bg-muted transition"
               >
-                Try Kids Demo
+                Demo for Kids
               </Link>
-            </div>
-
-            <div className="flex flex-wrap justify-center gap-4 text-sm text-muted-foreground">
-              <Link href="/kids" className="hover:text-foreground transition underline underline-offset-4">
-                Kids View
-              </Link>
-              <span className="text-border">|</span>
-              <Link href="/parent-demo" className="hover:text-foreground transition underline underline-offset-4">
-                Parent Dashboard
+              <Link 
+                href="/parent-demo"
+                className="bg-card border border-border text-foreground px-8 py-4 rounded-xl text-lg font-semibold hover:bg-muted transition"
+              >
+                Demo for Parents
               </Link>
             </div>
           </div>
