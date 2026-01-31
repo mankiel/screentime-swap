@@ -344,7 +344,7 @@ export default function LandingPage() {
           <div className="flex items-center justify-center gap-3">
             <img src="/logo.png" alt="ScreenTime Swap" className="w-8 h-8" />
             <span className="text-muted-foreground text-sm">
-              2026 ScreenTime Swap by TheMomDegree
+              2026 ScreenTime Swap
             </span>
           </div>
         </div>
