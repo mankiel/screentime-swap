@@ -314,31 +314,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* About Creator Section */}
-      <section className="py-16 border-t border-border">
-        <div className="container mx-auto px-6">
-          <div className="max-w-2xl mx-auto text-center">
-            <p className="text-sm uppercase tracking-wider text-muted-foreground font-medium mb-3">
-              Built by a Mom, for Moms
-            </p>
-            <h3 className="text-2xl font-bold text-foreground mb-4">TheMomDegree</h3>
-            <p className="text-muted-foreground mb-6 leading-relaxed">
-              Creating practical apps that solve real parenting challenges. 
-              Because moms know what moms need.
-            </p>
-            <a 
-              href="https://twitter.com/themomdegree" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="text-foreground font-medium hover:underline underline-offset-4"
-            >
-              @themomdegree
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
+      {{/* Footer */}
       <footer className="py-12 border-t border-border">
         <div className="container mx-auto px-6">
           <div className="flex items-center justify-center gap-3">
