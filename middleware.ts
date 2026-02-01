@@ -1,12 +1,18 @@
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
 
-// This middleware does nothing - all routes are public
-// Clerk env vars exist but are not being used
-export function middleware(request: NextRequest) {
-  return NextResponse.next()
-}
+// Make all routes public - no authentication required
+const isPublicRoute = createRouteMatcher(['(.*)'])
+
+export default clerkMiddleware(async (auth, request) => {
+  // All routes are public, no protection needed
+  return
+})
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
+  matcher: [
+    // Skip Next.js internals and all static files, unless found in search params
+    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
+    // Always run for API routes
+    '/(api|trpc)(.*)',
+  ],
 }
