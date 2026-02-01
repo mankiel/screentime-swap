@@ -314,7 +314,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {{/* Footer */}
+      {/* Footer */}
       <footer className="py-12 border-t border-border">
         <div className="container mx-auto px-6">
           <div className="flex items-center justify-center gap-3">
